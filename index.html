@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Назанельге шақыру ✨</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background: radial-gradient(circle at 20% 20%, #2a101d 0%, #0d090c 45%, #070507 100%); color: #ffffff; overflow-x: hidden; min-height: 100vh; }
+        .glow-orb-1 { position: fixed; width: 320px; height: 320px; background: radial-gradient(circle, rgba(244, 63, 138, 0.25) 0%, rgba(244, 63, 138, 0) 70%); top: -60px; right: -60px; border-radius: 50%; pointer-events: none; z-index: 0; animation: floatOrb 8s ease-in-out infinite alternate; }
+        .glow-orb-2 { position: fixed; width: 380px; height: 380px; background: radial-gradient(circle, rgba(219, 39, 119, 0.2) 0%, rgba(219, 39, 119, 0) 70%); bottom: -80px; left: -80px; border-radius: 50%; pointer-events: none; z-index: 0; animation: floatOrb 10s ease-in-out infinite alternate-reverse; }
+        @keyframes floatOrb { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(25px, 30px) scale(1.1); } }
+        .glass-card { background: rgba(20, 14, 18, 0.72); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(244, 114, 182, 0.22); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 30px rgba(236, 72, 153, 0.12); }
+        #yes-btn { background: linear-gradient(135deg, #f43f5e 0%, #ec4899 50%, #db2777 100%); box-shadow: 0 8px 25px rgba(236, 72, 153, 0.45); transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); z-index: 20; }
+        #yes-btn:hover { box-shadow: 0 12px 35px rgba(236, 72, 153, 0.7); filter: brightness(1.08); }
+        #yes-btn.fullscreen-yes { position: fixed !important; inset: 0 !important; width: 100vw !important; height: 100vh !important; border-radius: 0 !important; font-size: clamp(2.5rem, 8vw, 5rem) !important; z-index: 9999 !important; display: flex !important; align-items: center !important; justify-content: center !important; }
+        #no-btn { background: rgba(28, 20, 25, 0.9); border: 1.5px solid rgba(244, 114, 182, 0.45); color: #fbcfe8; transition: all 0.3s ease; z-index: 10; }
+        #no-btn:hover { background: rgba(244, 114, 182, 0.15); border-color: #f472b6; }
+        .custom-select { appearance: none; background-color: rgba(15, 10, 14, 0.88); border: 1.5px solid rgba(244, 114, 182, 0.35); color: #fdf2f8; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23f472b6'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.85rem center; background-size: 1.15rem; transition: all 0.25s ease; }
+        .custom-select:focus { outline: none; border-color: #ec4899; box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.25); }
+        .custom-select option { background-color: #160e13; color: #fce7f3; padding: 10px; }
+        .fade-in { animation: fadeInScale 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+        @keyframes fadeInScale { 0% { opacity: 0; transform: translateY(18px) scale(0.96); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+    </style>
+</head>
+<body class="flex items-center justify-center p-4 sm:p-6 relative select-none">
+    <div class="glow-orb-1"></div><div class="glow-orb-2"></div>
+    <main id="screen-1" class="glass-card w-full max-w-lg rounded-3xl p-7 sm:p-10 text-center relative z-10 fade-in">
+        <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-pink-500/15 border border-pink-400/30 mb-6 text-2xl shadow-inner">🌸</div>
+        <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold leading-snug tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-pink-200 via-pink-400 to-rose-300 mb-3">Назанель менімен серуендеп қайтуға желание бар ма?))</h1>
+        <p id="sub-hint" class="text-sm sm:text-base text-pink-200/70 mb-8 min-h-[24px] transition-all">Шын жүректен жауап бер ✨</p>
+        <div id="buttons-container" class="flex flex-wrap items-center justify-center gap-4 sm:gap-5">
+            <button id="yes-btn" type="button" class="rounded-2xl font-bold text-white px-8 py-3.5 text-lg sm:text-xl cursor-pointer active:scale-95">Ия 💖</button>
+            <button id="no-btn" type="button" class="rounded-2xl font-semibold px-7 py-3.5 text-base sm:text-lg cursor-pointer active:scale-95">Жоқ</button>
+        </div>
+    </main>
+    <section id="screen-2" class="hidden glass-card w-full max-w-xl rounded-3xl p-6 sm:p-10 text-center relative z-10">
+        <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-pink-500/20 border border-pink-400/40 mb-5 text-2xl">🥳</div>
+        <h2 class="text-2xl sm:text-3xl font-extrabold leading-snug text-transparent bg-clip-text bg-gradient-to-r from-pink-200 via-rose-300 to-pink-400 mb-2">Урааааа қай жақа және қай күні барамыз?</h2>
+        <p class="text-xs sm:text-sm text-pink-200/70 mb-7">Өзіңе ыңғайлы уақыт пен орынды таңда 👇</p>
+        <form id="date-form" class="space-y-5 text-left">
+            <div class="bg-black/30 border border-pink-500/20 rounded-2xl p-4 sm:p-5">
+                <label for="place-select" class="block text-xs sm:text-sm font-semibold uppercase tracking-wider text-pink-300 mb-2.5">1. Қайда барамыз? (Орын таңдау)</label>
+                <select id="place-select" name="place" required class="custom-select w-full rounded-xl px-4 py-3.5 pr-10 text-sm sm:text-base font-medium cursor-pointer"><option value="Кино">🎬 Кино</option><option value="Каток">⛸️ Каток</option><option value="Парк">🌳 Парк</option><option value="өзің барғың келетін жер личкаға жазсаң болады">💌 өзің барғың келетін жер личкаға жазсаң болады</option></select>
+            </div>
+            <div class="bg-black/30 border border-pink-500/20 rounded-2xl p-4 sm:p-5">
+                <span class="block text-xs sm:text-sm font-semibold uppercase tracking-wider text-pink-300 mb-2.5">2. Қай күні және сағат нешеде?</span>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div><label for="day-select" class="block text-xs text-pink-200/70 mb-1">Күні</label><select id="day-select" name="day" required class="custom-select w-full rounded-xl px-3.5 py-3 pr-9 text-sm sm:text-base font-medium cursor-pointer"></select></div>
+                    <div><label for="month-select" class="block text-xs text-pink-200/70 mb-1">Айы</label><select id="month-select" name="month" required class="custom-select w-full rounded-xl px-3.5 py-3 pr-9 text-sm sm:text-base font-medium cursor-pointer"><option value="Қаңтар (Январь)">Қаңтар</option><option value="Ақпан (Февраль)">Ақпан</option><option value="Наурыз (Март)">Наурыз</option><option value="Сәуір (Апрель)">Сәуір</option><option value="Мамыр (Май)">Мамыр</option><option value="Маусым (Июнь)">Маусым</option><option value="Шілде (Июль)">Шілде</option><option value="Тамыз (Август)">Тамыз</option><option value="Қыркүйек (Сентябрь)">Қыркүйек</option><option value="Қазан (Октябрь)">Қазан</option><option value="Қараша (Ноябрь)">Қараша</option><option value="Желтоқсан (Декабрь)">Желтоқсан</option></select></div>
+                    <div><label for="time-select" class="block text-xs text-pink-200/70 mb-1">Уақыты</label><select id="time-select" name="time" required class="custom-select w-full rounded-xl px-3.5 py-3 pr-9 text-sm sm:text-base font-medium cursor-pointer"><option value="14:00">14:00</option><option value="15:00">15:00</option><option value="16:00">16:00</option><option value="17:00" selected>17:00</option><option value="18:00">18:00</option><option value="19:00">19:00</option><option value="20:00">20:00</option><option value="21:00">21:00</option></select></div>
+                </div>
+            </div>
+            <button id="submit-btn" type="submit" class="w-full py-4 rounded-2xl font-bold text-base sm:text-lg text-white bg-gradient-to-r from-rose-500 via-pink-500 to-fuchsia-600 shadow-lg shadow-pink-500/30 hover:shadow-pink-500/50 hover:brightness-110 active:scale-[0.98] transition-all cursor-pointer flex items-center justify-center gap-2"><span>Жіберу ❤️</span></button>
+        </form>
+    </section>
+    <section id="screen-3" class="hidden glass-card w-full max-w-md rounded-3xl p-8 sm:p-10 text-center relative z-10">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-pink-500/20 border border-pink-400/40 mb-5 text-3xl animate-bounce">💌</div><h2 class="text-2xl sm:text-3xl font-extrabold text-pink-200 mb-3">Күтемін</h2><div id="summary-box" class="bg-black/40 border border-pink-500/25 rounded-2xl p-4 text-sm text-pink-100/90 space-y-1.5 mb-6 text-left"></div><p class="text-xs text-pink-300/70">Кездескенше, Назанель! ✨</p>
+    </section>
+    <iframe name="hidden_formsubmit_iframe" id="hidden_formsubmit_iframe" style="display:none;"></iframe>
+    <form id="fallback-form" action="https://formsubmit.co/sajyndimas@gmail.com" method="POST" target="hidden_formsubmit_iframe" style="display:none;"><input type="hidden" name="_subject" value="Назанель свиданиеге келісті!"><input type="hidden" name="_template" value="table"><input type="hidden" name="_captcha" value="false"><input type="hidden" name="Кімнен" value="Назанель"><input type="hidden" name="Қайда_барамыз" id="fb-place"><input type="hidden" name="Күні" id="fb-date"><input type="hidden" name="Уақыты" id="fb-time"></form>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const screen1 = document.getElementById('screen-1'), screen2 = document.getElementById('screen-2'), screen3 = document.getElementById('screen-3'), yesBtn = document.getElementById('yes-btn'), noBtn = document.getElementById('no-btn'), subHint = document.getElementById('sub-hint'), dateForm = document.getElementById('date-form'), daySelect = document.getElementById('day-select'), monthSelect = document.getElementById('month-select'), submitBtn = document.getElementById('submit-btn'), summaryBox = document.getElementById('summary-box');
+            const today = new Date();
+            for (let d = 1; d <= 31; d++) { const option = document.createElement('option'); option.value = d; option.textContent = d; if (d === today.getDate()) option.selected = true; daySelect.appendChild(option); }
+            if (monthSelect.options[today.getMonth()]) monthSelect.options[today.getMonth()].selected = true;
+            let noClickCount = 0;
+            const hints = ['Ойланшы тағы бір рет 🥺', 'Мүмкін "Ия" басарсың? 🌸', 'Кнопка "Ия" ренжіп өсіп жатыр 👀', 'Қарашы, қандай әдемі үлкен кнопка 💖', 'Басқа таңдау қалмады-ау деймін 😊', 'Соңғы мүмкіндік, Назанель! ✨'];
+            noBtn.addEventListener('click', () => { noClickCount++; if (noClickCount <= hints.length) subHint.textContent = hints[noClickCount - 1]; if (noClickCount >= 7) { yesBtn.classList.add('fullscreen-yes'); yesBtn.textContent = 'ИЯ 💖'; noBtn.style.display = 'none'; return; } yesBtn.style.paddingTop = `${14 + noClickCount * 14}px`; yesBtn.style.paddingBottom = `${14 + noClickCount * 14}px`; yesBtn.style.paddingLeft = `${32 + noClickCount * 28}px`; yesBtn.style.paddingRight = `${32 + noClickCount * 28}px`; yesBtn.style.fontSize = `${20 + noClickCount * 9}px`; });
+            yesBtn.addEventListener('click', () => { if (typeof confetti === 'function') confetti({ particleCount: 90, spread: 75, origin: { y: 0.6 }, colors: ['#f43f5e', '#ec4899', '#fbcfe8', '#ffffff'] }); screen1.classList.add('hidden'); screen2.classList.remove('hidden'); screen2.classList.add('fade-in'); });
+            dateForm.addEventListener('submit', async (e) => { e.preventDefault(); const place = document.getElementById('place-select').value, fullDate = `${daySelect.value} ${monthSelect.value}`, time = document.getElementById('time-select').value; submitBtn.disabled = true; submitBtn.innerHTML = '<span>Жіберілуде... ⏳</span>'; summaryBox.innerHTML = `<div><span class="text-pink-400 font-semibold">📍 Орын:</span> ${place}</div><div><span class="text-pink-400 font-semibold">📅 Күні:</span> ${fullDate}</div><div><span class="text-pink-400 font-semibold">⏰ Уақыты:</span> ${time}</div>`; try { const response = await fetch('https://formsubmit.co/ajax/sajyndimas@gmail.com', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify({ _subject: 'Назанель свиданиеге келісті!', _template: 'table', _captcha: 'false', Кімнен: 'Назанель', Қайда_барамыз: place, Күні: fullDate, Уақыты: time }) }); const result = await response.json(); if (!response.ok || result.success === 'false') throw new Error('AJAX отправка не подтверждена'); showSuccessScreen(); } catch (error) { document.getElementById('fb-place').value = place; document.getElementById('fb-date').value = fullDate; document.getElementById('fb-time').value = time; document.getElementById('fallback-form').submit(); showSuccessScreen(); } });
+            function showSuccessScreen() { if (typeof confetti === 'function') confetti({ particleCount: 110, spread: 85, origin: { y: 0.6 }, colors: ['#f43f5e', '#ec4899', '#fbcfe8', '#ffffff'] }); screen2.classList.add('hidden'); screen3.classList.remove('hidden'); screen3.classList.add('fade-in'); }
+        });
+    </script>
+</body>
+</html>
